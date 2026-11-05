@@ -31,3 +31,12 @@ ma50.plot(ax=ax, label="MA50")
 plt.legend()
 plt.show()
 # %%
+ax = close.loc["2024"].plot(label="Close") #Zooming on 2024
+ma20.loc["2024"].plot(ax=ax, label="MA20")
+ma50.loc["2024"].plot(ax=ax, label="MA50")
+plt.legend()
+plt.show()
+# %%
+signal = (ma20 > ma50)
+signal.loc["2024"]
+# %%
