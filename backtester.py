@@ -56,6 +56,21 @@ strat_curve.plot(ax=ax, label="MA20 > MA50")
 plt.legend()
 plt.show()
 
+# %%
 
+trades = signal.diff().abs()
+trades.loc["2024-04-20": "2024-06-15"]
+print(trades.sum())
+# %%
+cost = 0.001
+strat_net = strat_returns - trades.shift(1) * cost
+net_curve = (1 + strat_net).cumprod()
 
+ax = bh_curve.plot(label="Buy & Hold")
+strat_curve.plot(ax=ax, label="Strategy")
+net_curve.plot(ax=ax, label="Strategy after costs")
+plt.legend()
+plt.show()
+
+#Costs don't matter too much to the strategy
 # %%
