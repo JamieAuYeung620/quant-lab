@@ -74,3 +74,24 @@ plt.show()
 
 #Costs don't matter too much to the strategy
 # %%
+import numpy as np
+r = strat_net.dropna() #Daily returns, NaN values are dropped
+curve = (1 + r).cumprod() #Cumulative returns
+
+total_return = curve.iloc[-1] - 1 #Returns the final return
+years = len(r) / 252 #Trading days in a year
+ann_return = (1 + total_return) ** (1 / years) - 1
+ann_vol = r.std() * np.sqrt(252) #Annualized volatility
+sharpe = ann_return / ann_vol #Sharpe ratio
+
+#Drawdown is the difference between the peak and the trough of the curve
+peak = curve.cummax() #Cumulative max of the curve
+dd = curve/peak - 1
+max_dd = dd.min()
+
+print(total_return, ann_return, ann_vol, sharpe, max_dd)
+#Total Return = +39.7, Annual Return = 5.9% a year
+# #Annual Volatility = 18.4% a year, Sharpe Ratio = 0.32
+# Max Drawdown = -29.8%
+
+# %%
