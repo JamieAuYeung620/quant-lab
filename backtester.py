@@ -95,3 +95,23 @@ print(total_return, ann_return, ann_vol, sharpe, max_dd)
 # Max Drawdown = -29.8%
 
 # %%
+def metrics(r, rf=0.04):
+    r = r.dropna()
+    curve = (1 + r).cumprod()
+    years = len(r) / 252
+    total_return = curve.iloc[-1] - 1
+    ann_return = (1 + total_return) ** (1 / years) - 1
+    ann_vol = r.std() * np.sqrt(252)
+    sharpe = (ann_return - rf) / ann_vol
+
+    peak = curve.cummax()
+    dd = curve/peak - 1
+    max_dd = dd.min()
+
+    return {"total": total_return, "ann_return": ann_return, "sharpe": sharpe, "max_dd": max_dd}
+
+print(metrics(strat_net))
+print(metrics(returns))
+
+# %%
+
