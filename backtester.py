@@ -113,5 +113,20 @@ def metrics(r, rf=0.04):
 print(metrics(strat_net))
 print(metrics(returns))
 
-# %%
+# %% Look ahead bias check: What if we did not lag into the signal?
+cheat_returns = returns * signal 
+cheat_curve = (1 + cheat_returns).cumprod() 
 
+ax = bh_curve.plot(label = "Buy & Hold")
+strat_curve.plot(ax=ax, label = "Strategy (lagged, honest)")
+cheat_curve.plot(ax=ax, label = "Strategy (no lag cheating)")
+plt.legend()
+plt.show()
+
+fast_signal = (returns > 0).astype(int)    
+print("honest:  ", metrics(strat_returns))
+print("cheating:", metrics(cheat_returns))
+print("fast, cheating:", metrics(returns * fast_signal))
+print("fast, honest:  ", metrics(returns * fast_signal.shift(1)))
+
+# %%
